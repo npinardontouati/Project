@@ -1,0 +1,405 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[round]{natbib}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black}
+\usepackage{enumitem}
+\setlist{topsep=2pt,itemsep=2pt,parsep=0pt}
+
+\title{Demand-Based Asset Pricing:\\
+\large A Note on the Framework, Non-Homotheticity, and Negative (Net) Portfolio Shares}
+\author{}
+\date{\today}
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\me}{\mathit{me}}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+Demand-based asset pricing reframes the canonical asset-pricing question.
+Rather than deriving prices from a representative-agent stochastic
+discount factor and asking which preferences and shocks rationalise the
+cross-section, it specifies an estimable system of investor-level demand
+functions over assets, identifies its parameters from observed
+holdings, and lets prices clear the resulting demand against fixed
+supply. The intellectual lineage runs from McFadden's discrete-choice
+demand \citep{mcfadden1974conditional}, to Berry's inversion approach
+\citep{berry1994estimating} and the BLP random-coefficients framework
+\citep{blp1995,nevo2001measuring}, to \citet{koijen2019demand} who first
+ported these tools to portfolio choice. The framework has since
+underpinned work on inelastic markets
+\citep{gabaix2021inelastic}, central-bank asset purchases
+\citep{koijen2021qe}, exchange rates \citep{koijen2020global},
+benchmark-driven flows \citep{pavlova2023benchmarking}, and the
+allocation of price-setting power across investor types
+\citep{koijen2024which,haddad2025competitive}.
+
+This note has two purposes. First, it lays out the workhorse logit
+demand system and its identification (Part~I). Second, it confronts the
+framework with two specific concerns that arise when one tries to use it
+to model \emph{household} balance sheets across housing, deposits, and
+equities as income grows (Part~II): (i)~whether the framework
+accommodates \emph{non-homotheticity}---portfolio shares that vary
+systematically with wealth or income---and (ii)~whether it accommodates
+\emph{negative net portfolio shares}, of which the leading example is
+the negative net housing position created by a mortgage. The household
+case differs from the institutional case in a way that matters for
+question~(ii): the negative leg (the mortgage) is bundled with the
+positive leg (the house) by collateral and by a common price, so the
+``shorts as supply'' fix that works for independent short books does
+not transplant.
+
+\bigskip
+\hrule
+\bigskip
+
+\begin{center}\large\textsc{Part I: Institutional Demand-Based Asset Pricing}\end{center}
+
+\section{The Logit Demand System for Portfolios}
+
+Fix a date $t$ and let $i$ index investors and $n=1,\dots,N_t$ index
+inside assets, with $n=0$ denoting an outside asset (cash, or, more
+generally, the residual claim on non-asset wealth). Each investor has
+assets under management $A_{i,t}$ and chooses portfolio weights
+$\{w_{i,t}(n)\}_{n=0}^{N_t}$ summing to one. \citet{koijen2019demand}
+specify the workhorse \emph{characteristics-based logit}:
+\begin{align}
+w_{i,t}(n) &= \frac{\delta_{i,t}(n)}{1 + \sum_{m=1}^{N_t}\delta_{i,t}(m)}, \qquad n=1,\dots,N_t, \label{eq:share}\\
+w_{i,t}(0) &= \frac{1}{1 + \sum_{m=1}^{N_t}\delta_{i,t}(m)},\\
+\delta_{i,t}(n) &= \exp\!\Bigl(\beta^0_{i,t}\,\me_{n,t} + \beta_{i,t}^\top x_{n,t} + \eps_{i,t}(n)\Bigr), \label{eq:delta}
+\end{align}
+where $\me_{n,t}$ is log market equity (or another scale-of-the-asset
+variable), $x_{n,t}$ is a vector of observable asset characteristics
+(profitability, dividends-to-book, betas, etc.), and $\eps_{i,t}(n)$ is
+the latent demand for asset $n$ by investor $i$.
+
+Three structural features of \eqref{eq:share} matter for what
+follows. First, since $\delta_{i,t}(n) > 0$, every share $w_{i,t}(n) \in
+(0,1)$: \emph{negative weights are ruled out by construction}. Second,
+the system is Cobb-Douglas-like in the risky assets: relative weights
+$w_{i,t}(n)/w_{i,t}(m)$ depend only on relative $\delta$'s, so they are
+\emph{scale-free} in $A_{i,t}$. Third, market clearing is asset by
+asset,
+\begin{equation}
+p_{n,t}\,s_{n,t} \;=\; \sum_i A_{i,t}\,w_{i,t}(n),
+\label{eq:clearing}
+\end{equation}
+where $s_{n,t}$ is shares outstanding, so the equilibrium price
+$p_{n,t}$ is implicitly defined and can be solved fixed-point style.
+The map from demand parameters to equilibrium prices is what makes
+counterfactuals (Was QE effective? Are markets inelastic? Who set the
+price of Tesla?) tractable.
+
+\section{Identification and Estimation}
+
+The empirical challenge in \eqref{eq:delta} is that $\me_{n,t}$ and the
+latent demand $\eps_{i,t}(n)$ are both functions of price and so
+correlated: assets with high latent demand have high prices and so high
+market equity. OLS estimates of $\beta^0_{i,t}$ are biased toward zero
+(or even positive), implying spuriously inelastic demand.
+
+\citet{koijen2019demand} resolve this with an instrument built from
+investors' \emph{investment universes}. Let $\mathbf{1}_{i,t}(n) \in
+\{0,1\}$ indicate whether asset $n$ is in investor $i$'s feasible set
+at $t$ (estimated from the empirical extensive margin of holdings). The
+instrument for $\me_{n,t}$ in investor $i$'s demand equation is the
+counterfactual market equity that would obtain if every \emph{other}
+investor $j \neq i$ held an equal-weighted portfolio over their own
+universe:
+\begin{equation}
+\widehat{\me}_{n,t}^{\,(-i)} \;=\; \log\!\left( \sum_{j\neq i} A_{j,t}\,\frac{\mathbf{1}_{j,t}(n)}{\sum_m \mathbf{1}_{j,t}(m)} \right).
+\end{equation}
+The exclusion restriction is that other investors' AUM and universe
+composition shift the supply of capital chasing asset $n$ without
+shifting $i$'s latent demand for it. Conditional on asset
+characteristics, this yields finite (and economically large) own-price
+elasticities, typically near one---an order of magnitude below what
+representative-agent calibrations would imply, and the empirical
+foundation of the inelastic-markets literature
+\citep{gabaix2021inelastic}.
+
+The instrument has been the subject of two important refinements.
+\citet{vanderbeck2022estimation} shows that when latent demand has a
+common factor structure, the instrument is partly endogenous and
+elasticities are biased; he proposes corrections that anchor the
+estimated demand system to a small set of fundamentals.
+\citet{haddad2025competitive} and \citet{koijen2024which} examine
+heterogeneity in elasticities across investor types and find that a
+small set of large, active investors do most of the price setting.
+
+\section{Non-Homotheticity in the Institutional Setting}
+
+The bare logit \eqref{eq:share} is homothetic in $A_{i,t}$ \emph{within
+the risky set}: doubling AUM holding the $\delta$'s fixed scales every
+position proportionally and leaves every share unchanged. To deliver
+shares that move systematically with size, the framework must encode
+size in either the coefficients or the characteristics. Four common
+hooks:
+\begin{enumerate}
+\item Let $\beta^0_{i,t}$ depend on $\log A_{i,t}$, so the loading on
+log market equity is size-elastic. Equivalently, allow the elasticity
+of demand to vary with investor size.
+\item Interact asset characteristics with investor characteristics:
+$\beta_{i,t} = B \cdot z_{i,t}$ for a matrix $B$ and a vector
+$z_{i,t}$ of investor attributes. \citet{koijen2024which} and
+\citet{koijen2020global} pursue this aggressively, with separate
+$\beta$'s estimated by investor type.
+\item Allow the outside-asset margin $w_{i,t}(0)$ to depend on AUM
+through a size-dependent constant in \eqref{eq:delta}.
+\item Use random-coefficient (BLP-style) extensions in which the
+distribution of $\beta_{i,t}$ over investors has wealth-varying
+moments \citep{blp1995,nevo2001measuring}.
+\end{enumerate}
+All four are parametric: non-homotheticity is imposed through
+functional form on the coefficients, not derived from preferences. The
+distinction matters when extending to households (Section~\ref{sec:nh}
+below), where preference-based theories of non-homotheticity already
+exist \citep{wachter2010luxury}.
+
+\section{Independent Short Selling}\label{sec:short-inst}
+
+Because $\delta_{i,t}(n) > 0$, the logit cannot produce a negative
+$w_{i,t}(n)$. In the original \citet{koijen2019demand} application this
+is benign---the data are 13F long-only holdings, where shorts are
+mostly absent. Four routes accommodate shorts when they matter:
+\begin{enumerate}
+\item \emph{Augmented choice set}: treat each asset as two products, a
+long position and a short position, each with its own non-negative
+logit share; net exposure is long minus short.
+\item \emph{``Shorts as supply'' (twin logit)}: the investor brings a
+long-side demand with budget $A^L_{i,t}$ and a short-side supply with
+budget $A^S_{i,t}$, the latter bounded by the securities-lending
+market \citep{davolio2002market,duffie2002securities,vayanos2008search,lewellen2011institutional}.
+Market clearing becomes net, and signed exposure emerges in
+equilibrium.
+\item \emph{Mean-variance or linear demand}: naturally signed, at the
+cost of losing the discrete-choice microfoundation and characteristics
+parsimony.
+\item \emph{Local linearisation around a no-short benchmark}:
+elasticities are recovered analytically while estimation is restricted
+to long holdings \citep{haddad2025competitive}.
+\end{enumerate}
+Crucially, each of these treats the short as \emph{independent} of any
+particular long position: the investor freely allocates
+shorting capacity across assets, subject to a separate budget. This is
+the appropriate stylisation for an equity hedge fund, and it is not the
+right stylisation for a mortgaged homeowner. Part~II addresses why.
+
+\bigskip
+\hrule
+\bigskip
+
+\begin{center}\large\textsc{Part II: Household Demand Systems with Leverage and Non-Homotheticity}\end{center}
+
+\section{From Institutional to Household Demand Systems}
+
+Transposing the logit framework to households changes several primitives.
+The choice set narrows from thousands of securities to a handful of
+asset \emph{classes}: housing, deposits, listed equities, bonds, and
+private business equity. The outside-asset margin, a residual in the
+institutional case, becomes a first-order modelling object---housing
+dominates the median household balance sheet. Income, not just wealth,
+is a structural driver of allocations, so the investor-characteristic
+vector $z_{i,t}$ must include labour-income variables. Leverage is no
+longer optional; many household balance sheets are built around a
+mortgage. Finally, the relevant data are surveys (the U.S. Survey of
+Consumer Finances, the euro-area Household Finance and Consumption
+Survey) or administrative wealth registers (Sweden, Norway), not 13F.
+
+The demand-system literature on households is younger than its
+institutional counterpart but already extends to insurance choice
+\citep{koijen2016health} and is being applied to balance-sheet
+composition in ongoing work. Its appeal is the same as in the
+institutional setting: characteristics-based parsimony, an explicit
+demand function rather than a structural utility, and the prospect of
+identifying elasticities from cross-sectional variation rather than
+from contested time-series moments.
+
+\section{Non-Homothetic Household Portfolio Shares}\label{sec:nh}
+
+The household-finance literature documents that portfolio shares are
+strongly non-homothetic. The risky share rises with wealth, both within
+and across cohorts
+\citep{calvet2007down,calvet2009fight,carroll2002portfolios,bach2020rich,fagereng2020heterogeneity};
+gross housing's share of total assets declines with wealth above a
+threshold, while deposits are hump-shaped or declining; mortgage debt
+is hump-shaped over the life cycle. The \citet{gomes2021household}
+survey collects this evidence.
+
+Theoretically, two routes generate this empirically. The
+\emph{structural} route derives non-homotheticity from preferences and
+constraints: HARA utility, subsistence consumption, luxury goods, or
+borrowing constraints that bind differently at different wealths
+\citep{wachter2010luxury,cocco2005portfolio,yao2005optimal,chetty2017effect}.
+The \emph{demand-system} route, in contrast, imposes
+non-homotheticity through the parametric hooks listed in Section~4: let
+$\beta_{i,t}$ in \eqref{eq:delta} depend on $(\log A_{i,t}, \log y_{i,t},
+\mathrm{age}_{i,t})$ so that the loading on each asset characteristic
+moves with wealth, income, and age. Concretely, for asset class
+$n\in\{H,D,E\}$ (housing, deposits, equities),
+\begin{equation}
+\delta_{i,t}(n) \;=\; \exp\!\Bigl( \alpha_n + \beta^{w}_n\,\log A_{i,t} + \beta^{y}_n\,\log y_{i,t} + \beta^{a}_n\,\mathrm{age}_{i,t} + \gamma_n^\top x_{n,t} + \eps_{i,t}(n) \Bigr),
+\label{eq:hh-delta}
+\end{equation}
+where the wealth-, income-, and age-dependent intercepts deliver
+non-homothetic shares directly. Coefficients $\beta^w_n,\beta^y_n$ are
+identified from the cross-section of households with different
+$(A,y,\mathrm{age})$ holding the same characteristics $x_{n,t}$ fixed.
+
+This route is flexible but \emph{descriptive}: \eqref{eq:hh-delta} can
+reproduce any cross-sectional pattern of shares in $(A,y,\mathrm{age})$
+but does not explain why. For applications where the question is
+``what would happen to allocations if income $y$ moved by~$\Delta$,''
+this is enough; for welfare or policy counterfactuals, one usually
+wants a structural foundation alongside.
+
+\section{Linked Positions: Housing and Mortgages}\label{sec:linked}
+
+The user's motivating case---negative net housing shares created by
+mortgages---fails the institutional fixes of Section~\ref{sec:short-inst}
+for one reason. A mortgage is not an independent short. It is the
+financing leg of a specific housing purchase, tied to the corresponding
+gross housing position by a loan-to-value constraint
+\begin{equation}
+M_{i,t} \le \ell_{i,t}\,H_{i,t},
+\label{eq:ltv}
+\end{equation}
+and by a common underlying price (the house price). Modelling a
+``demand for mortgages'' as an independent supply, separately
+characteristised and budgeted, severs that link. Four reformulations
+preserve it.
+
+\paragraph{Gross-portfolio reformulation with explicit LTV.}
+The cleanest route, and the one we recommend for the user's
+application. Run the logit \eqref{eq:share}--\eqref{eq:hh-delta} over
+\emph{gross}, non-negative positions $\{H, D, E, B, M\}$, treating the
+mortgage $M$ as a separate ``asset'' whose characteristic vector
+includes a negative-yield component (the mortgage rate) and whose
+choice is linked to $H$ via \eqref{eq:ltv}. Net portfolio shares are
+then accounting identities:
+\begin{equation}
+\frac{H_{i,t} - M_{i,t}}{A_{i,t}}, \quad \frac{D_{i,t}}{A_{i,t}}, \quad \frac{E_{i,t}}{A_{i,t}}, \quad \dots,
+\end{equation}
+with $A_{i,t} = H_{i,t} + D_{i,t} + E_{i,t} + B_{i,t} - M_{i,t}$, and
+they can take any sign. Negative net housing shares arise mechanically
+for young leveraged households where $M_{i,t} > H_{i,t}$ (underwater)
+or where $H_{i,t}$ enters $A_{i,t}$ in the denominator only through
+$H - M$. Non-homothetic \emph{net} housing shares follow from
+non-homothetic \emph{gross} $H$ and $M$ schedules in
+\eqref{eq:hh-delta}, which scale differently in $(A,y,\mathrm{age})$.
+
+The cost of this approach is that \eqref{eq:ltv} is an inequality
+constraint, so closed-form market clearing breaks when it binds---one
+solves the household problem subject to the constraint and aggregates
+numerically. Identification of the elasticity of $M$ to the mortgage
+rate exploits monetary-policy shocks and lender-market structure
+\citep{greenwald2018mortgage,kaplan2020housing}.
+
+\paragraph{Nested logit with continuous leverage.}
+An alternative when leverage choice is continuous: an outer logit over
+asset-class shares (Section~\ref{sec:nh}), then an inner Tobit /
+fractional-response model for $\ell_{i,t}\in[0,\bar\ell]$ conditional
+on $H_{i,t}>0$. This keeps the IO discrete-choice machinery for the
+``what to hold'' decision and isolates the leverage choice for separate
+identification (e.g., from regional variation in lender competition).
+
+\paragraph{Bundle-as-product.}
+If leverage is effectively discrete (a handful of mortgage products),
+treat ``housing at LTV $\ell_k$'' as the $k$-th product entering the
+logit alongside deposits and equities. Non-negativity is preserved at
+the bundle level, and net housing share is mechanically
+$(1-\ell_k)\,w_{H,\ell_k}$. The choice set grows, but the framework is
+unchanged.
+
+\paragraph{AIDS / QAIDS on net shares.}
+The most direct way to allow signed and non-homothetic shares is to
+abandon logit for an Almost Ideal Demand System
+\citep{deaton1980almost} or its quadratic extension
+\citep{banks1997quadratic}. These specify shares as linear (or
+quadratic) functions of log-prices and log-total-expenditure, so they
+are naturally signed and the ``Q'' term encodes non-homotheticity
+directly. The trade-off is the loss of three things the logit gave us:
+the McFadden microfoundation, characteristics-based parsimony (AIDS is
+specified at the product level, not the characteristic level), and the
+\citet{koijen2019demand} IV strategy. For exploratory empirical work on
+household balance sheets, AIDS/QAIDS may in fact be the better starting
+point.
+
+\section{Mapping to Household Data}
+
+The gross-portfolio reformulation aligns naturally with how household
+data are organised. The SCF (US), the HFCS (euro area), and Swedish or
+Norwegian administrative wealth registers all report assets gross of
+liabilities (gross housing value, deposit balances, mutual-fund
+holdings, business equity) and liabilities as separate line items
+(primary-residence mortgage, other property loans, consumer credit,
+student loans). The implementation maps directly:
+\begin{itemize}
+\item Gross $H,D,E,B,M$ from the wealth statement.
+\item Investor characteristics $z_{i,t}$ from the demographic and
+income blocks: age, education, family structure, labour income,
+unemployment risk proxies.
+\item Asset characteristics $x_{n,t}$: deposit and mortgage rates at
+the local lender level, regional house-price-to-rent ratios, expected
+equity-market characteristics (dividend yield, P/E) at the household's
+investment horizon.
+\end{itemize}
+Identification is harder than in the institutional case. The
+\citet{koijen2019demand} instrument relies on rich heterogeneity in
+investment universes across investors; households' universes are
+narrow and overlap heavily. Substitutes used in the household-finance
+literature include: regional house-price shocks
+\citep{kaplan2020housing}; monetary-policy-driven mortgage-rate
+variation \citep{greenwald2018mortgage}; lender market structure;
+cohort and age effects for life-cycle non-homotheticity; idiosyncratic
+income shocks. The natural empirical strategy is to combine
+characteristics-based demand estimation à la Koijen-Yogo with
+quasi-experimental identification of a small number of key
+elasticities, in particular the mortgage-rate elasticity of $M$
+conditional on $H$.
+
+Pitfalls worth flagging: top-coding of high wealth in surveys,
+missingness in private business equity, mark-to-market versus
+historical-cost housing values, mortgage-refinancing timing that
+breaks contemporaneous identification of $M$ from current rates, and
+the fact that LTV constraints \eqref{eq:ltv} bind selectively across
+the wealth distribution.
+
+\section{Concluding Remarks}
+
+The logit demand framework of \citet{koijen2019demand} can be
+transposed to household balance sheets but requires two extensions to
+deliver what the user's application needs. Non-homotheticity (the
+allocation pattern of housing, deposits, and equities as income grows)
+is accommodated parametrically via wealth-, income-, and age-interacted
+coefficients in \eqref{eq:hh-delta}---flexible but descriptive.
+Negative \emph{net} portfolio shares (the negative net housing position
+created by a mortgage) are accommodated naturally by a
+gross-portfolio reformulation with an explicit LTV constraint, where
+gross positions remain non-negative inside the logit and net shares are
+accounting identities that can take any sign. The independent-short
+fixes that work for institutional equity portfolios---augmented choice
+set or ``shorts as supply''---do \emph{not} fit the household-leverage
+case because the negative liability is bundled with a specific positive
+asset.
+
+For analysts willing to give up the discrete-choice microfoundation and
+the Koijen-Yogo IV, an AIDS or QAIDS system on net shares is the
+closer-fitting tool: it is naturally signed, naturally non-homothetic,
+and has decades of empirical infrastructure behind it. The decision
+between these two routes turns on whether the priority is characteristic-based
+counterfactual analysis (favour the gross-portfolio logit) or flexible
+description of the wealth-allocation profile (favour QAIDS).
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
