@@ -1,0 +1,16 @@
+paper_id,authors,year,country,gdp_pc_ppp_band,identification,shock_type,shock_usd_ppp_2016,horizon,baseline_cons_usd_ppp_mo,baseline_assets_usd_ppp,asset_class,asset_subclass,te_usd_ppp_2016,control_mean_usd_ppp,mpx,te_pct_control,te_sd,source_table,status
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,real,housing_improvement_iron_roof,359,598,0.19,0.60,,assets table / abstract,verified
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,aggregate,total_nonland_movable_assets_net_of_loans,177,681,0.09,0.26,,assets table,verified
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,financial,savings_mpesa_balance,3,,~0.00,,,savings table,verified
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,real,livestock_value,,,,,,assets table,gated (extract w/ library access)
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,real,durable_goods_furniture,,,,,,assets table,gated
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,real,nonag_business_value,,,,,,assets table,gated
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,real,land_value,,,,,,assets table,gated
+HS2016,Haushofer & Shapiro,2016,Kenya,<3k,village+HH RCT,unconditional cash transfer,709 (arms: 404 / 1525),~9 months post-baseline,158,,consumption_flow,monthly_consumption,36,158,,0.23,,consumption table,verified
+BCLO2021,Briggs/Cesarini/Lindqvist/Ostling,2021,Sweden,>30k,lottery (admin panel),lottery prize,150000,immediate & persistent,,,financial,equity_market_participation_pp(+12pp nonparticip; ~0 prior holders),,,,,,Table (participation),verified
+BCLO2021,Briggs/Cesarini/Lindqvist/Ostling,2021,Sweden,>30k,lottery (admin panel),lottery prize,150000,immediate & persistent,,,financial,risky_asset_share,,,,,,portfolio tables,gated
+FHN2021,Fagereng/Holm/Natvik,2021,Norway,>30k,lottery (admin panel),lottery prize,1500-150000,year of winning (yr 1),,,aggregate,total_saving_1yr (MPS = 1 - MPC),,,0.50,,,MPC figures,verified
+FHN2021,Fagereng/Holm/Natvik,2021,Norway,>30k,lottery (admin panel),lottery prize,1500-150000,year of winning (yr 1),,,consumption_flow,mpc_year1 (range 0.4 high-liq large prize to ~1.0 low-liq small prize),,,0.50,,,MPC figures,verified
+FHN2021,Fagereng/Holm/Natvik,2021,Norway,>30k,lottery (admin panel),lottery prize,1500-150000,multi-year,,,financial,bank_deposits,,,,,,balance-sheet decomposition,gated
+FHN2021,Fagereng/Holm/Natvik,2021,Norway,>30k,lottery (admin panel),lottery prize,1500-150000,multi-year,,,financial,equity_mutual_funds,,,,,,balance-sheet decomposition,gated
+FHN2021,Fagereng/Holm/Natvik,2021,Norway,>30k,lottery (admin panel),lottery prize,1500-150000,multi-year,,,debt,debt_repayment,,,,,,balance-sheet decomposition,gated

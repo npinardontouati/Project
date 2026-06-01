@@ -1,0 +1,179 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[round]{natbib}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black}
+\usepackage{enumitem}
+\setlist{topsep=2pt,itemsep=2pt,parsep=0pt}
+
+\newcommand{\mpx}{\mathrm{MP}}
+
+\title{Causal Effects of Household Windfalls on Saving and Asset Allocation:\\
+\large Review Design, Standardization, and a First Worked Extraction}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent This note sets up a literature review of studies that \emph{causally}
+estimate how households that suddenly become richer change (i) total saving and
+(ii) the allocation of that saving across asset classes, with at least a
+financial-vs-real split. The canonical design is an exogenous windfall---a cash
+transfer randomized controlled trial (RCT), an asset grant, or a lottery---with
+the household balance sheet observed before and after. We fix the inclusion
+criteria, the asset taxonomy, and a standardization scheme built around the
+\emph{marginal propensity to allocate the windfall to asset class $X$}
+($\mpx_X$). We then execute a first extraction on three papers that span the
+development spectrum and whose results are available without a paywall:
+\citet{haushofer2016short} in rural Kenya, and \citet{briggs2021windfall} and
+\citet{fagereng2021mpc} in Sweden and Norway. The contrast is the organizing
+finding: poor households move windfalls into \emph{real} assets (livestock,
+durables, housing), rich households into \emph{financial} assets (deposits,
+then equity). Remaining cells await full-text access and are flagged.
+\end{abstract}
+
+\section{Question and design}
+
+We want the causal object $\partial a_X / \partial w$: the change in holdings of
+asset class $X$ when a household receives an exogenous increment to wealth $w$.
+Pure observational MPC-out-of-wealth correlations do not identify this because
+wealth co-moves with permanent income, preferences, and beliefs. We therefore
+restrict attention to studies with a credibly exogenous positive wealth shock and
+a measured balance-sheet response. The two outcomes of interest are (I) total
+saving (the share of the windfall \emph{not} consumed) and (II) the split of that
+saving across asset classes.
+
+\paragraph{Inclusion criteria.} A study enters if it has all of: (1) an
+exogenous/quasi-exogenous positive wealth shock to households (cash transfer RCT,
+in-kind asset grant, lottery, or clean natural experiment); (2) credible causal
+identification (randomization, lottery draw, regression discontinuity, or
+instrument); (3) at least one balance-sheet or saving outcome beyond pure
+consumption; (4) reported or recoverable baseline levels for treated and control
+groups. We aim for at least two studies in each band of GDP per capita (PPP):
+$<\!\$3$k (subsistence), \$3--12k, \$12--30k, and $>\!\$30$k (rich).
+
+\section{Asset taxonomy and recording principle}
+
+The \emph{atomic} unit of extraction is the most granular asset line item a paper
+reports; financial-vs-real aggregates are computed \emph{from} those items and are
+never the recording granularity. The roll-up is:
+\begin{itemize}
+  \item \textbf{Financial:} cash / mobile money / liquid deposits; term and
+  illiquid deposits and savings-group (ROSCA) balances; equity, mutual funds, and
+  securities (extensive and intensive margin). Memo line: net debt / debt
+  repayment.
+  \item \textbf{Real:} housing and home improvement; consumer durables; land;
+  livestock; gold/jewelry; and---separated deliberately---the productive capital
+  of the self-employed (farm equipment, inventory, business capital), the key
+  margin for poor self-employed households.
+\end{itemize}
+
+\section{Standardization}
+
+For each (paper $\times$ asset-class) cell we report, in priority order:
+\begin{enumerate}
+  \item \textbf{$\mpx_X$ (headline):} $\mpx_X = \Delta a_X / \text{windfall}$, both
+  in the same currency and period. Dimensionless and bounded in $[0,1]$; summed
+  across consumption, every asset class, and debt paydown it should be
+  $\approx 1$, giving a full ``where did the dollar go'' decomposition. This is
+  what makes a \$700 Kenyan transfer and a \$150{,}000 Swedish prize comparable.
+  \item \textbf{Constant USD-PPP (base year 2016):} $\Delta a_X$, the windfall, and
+  baselines, converted via World Bank PPP factors and deflated by the country CPI.
+  \item \textbf{Percent of control mean:} $\Delta a_X / \overline{a}_X^{\,\text{ctrl}}$.
+  \item \textbf{Standard-deviation units} where the paper reports them.
+\end{enumerate}
+Asset holdings are stocks, so $\mpx_X$ evolves with horizon; every estimate
+carries its post-treatment horizon.
+
+\section{First worked extraction}
+
+\begin{table}[h]\centering\small
+\caption{Standardized effects, three ungated papers (selected cells).}
+\begin{tabular}{@{}p{2.6cm}p{1.5cm}p{1.6cm}p{3.0cm}p{2.4cm}@{}}
+\toprule
+Study (country) & Windfall (USD-PPP) & Baseline & Effect & $\mpx$ (headline) \\
+\midrule
+\citet{haushofer2016short} (Kenya, $<\!\$3$k) & 404 / 1525 (avg $\approx$709) &
+cons. \$158/mo; very poor rural & roof/home +\$359 (+60\%); net movable assets
++\$177 (+26\%); M-Pesa +\$3 & real $\approx$0.28 (housing 0.19; movable 0.09) \\
+\addlinespace
+\citet{briggs2021windfall} (Sweden, $>\!\$30$k) & 150{,}000 & admin panel of lottery
+players & stock-market participation \textbf{+12 pp} for prior non-participants;
+$\approx$0 for holders & financial (equity, extensive margin) \\
+\addlinespace
+\citet{fagereng2021mpc} (Norway, $>\!\$30$k) & 1{,}500--150{,}000 & admin panel,
+full balance sheets & first-year MPC $\approx$0.5 (0.4--1.0); saved share buffers
+into deposits & saving $\approx$0.5; financial (deposits) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Kenya: \citet{haushofer2016short} --- subsistence}
+A village- and household-level RCT of unconditional GiveDirectly transfers in
+rural Rarieda, cross-randomizing recipient gender, lump-sum versus nine monthly
+installments, and size (\$404 vs \$1{,}525 PPP). Roughly nine months out,
+monthly consumption rose \$36 PPP off a \$158 PPP base, but the balance-sheet
+response is concentrated in \emph{real} assets: home value (chiefly replacing
+thatch with an iron roof) rose \$359 PPP (+60\%) and net non-land movable assets
+(durables, livestock, and business, net of loans) rose \$177 PPP (+26\%), while
+liquid M-Pesa savings rose only \$3 PPP. The paper's own decomposition puts
+$\approx$30\% of the transfer into assets ($\approx$19\% housing, $\approx$9\%
+movable), i.e.\ $\mpx_{\text{real}} \approx 0.28$ with $\mpx_{\text{financial}}$
+near zero. Disaggregated livestock, durable, land, and business lines are in the
+published asset table and are flagged \texttt{gated} pending full-text access.
+
+\subsection{Sweden: \citet{briggs2021windfall} --- rich, the equity margin}
+Using administrative data on Swedish lottery players, a \$150{,}000 windfall
+raises the probability of stock-market participation by about 12 percentage
+points among pre-lottery non-participants, with no discernible effect on existing
+holders. The effect is immediate and seemingly permanent. This is the clean
+extensive-margin move into a \emph{financial} (equity) asset class---a margin
+absent in the Kenyan data---and the authors note it is far smaller than standard
+life-cycle models predict, implicating pessimistic equity-return beliefs.
+
+\subsection{Norway: \citet{fagereng2021mpc} --- rich, the saving margin}
+Norwegian lottery prizes (\$1{,}500--150{,}000) against third-party-reported
+balance sheets yield a first-year MPC averaging $\approx$0.5---spending spikes in
+the year of winning and reverts within about five years---ranging from $\approx$0.4
+for high-liquidity winners of large prizes to $\approx$1.0 for low-liquidity
+winners of small prizes. The implied first-year marginal propensity to save is
+$\approx$0.5, buffered first into liquid \emph{deposits}. The precise
+deposit/equity/debt-repayment split is in the balance-sheet decomposition and is
+flagged \texttt{gated}.
+
+\section{The organizing contrast}
+Across an income gap of more than an order of magnitude, the \emph{level} of
+saving out of a windfall is sizeable everywhere, but its \emph{composition}
+shifts sharply with development. Poor, largely self-employed households convert
+windfalls into real, productive, and store-of-value assets (livestock, durables,
+roofs); rich households with bank and brokerage access save into financial assets
+(deposits, then equity). The $\mpx$ framing makes this a single comparable axis
+and is the spine of the full review.
+
+\section{Status and next steps}
+Cells marked \texttt{verified} trace to published figures; \texttt{gated} cells
+(disaggregated Kenyan asset lines; Norwegian deposit/equity/debt split; Swedish
+risky-share intensive margin) await Columbia library full-text access. The full
+execution will (i) fill those cells, (ii) extend to the rest of the pipeline
+across all four development bands---\citet{egger2022general},
+\citet{blattman2014generating, blattman2020long}, \citet{banerjee2015multifaceted},
+\citet{demel2008returns}, \citet{gertler2012investing} at the lower end, and
+\citet{fagereng2019saving}, \citet{cesarini2017effect}, \citet{imbens2001estimating},
+\citet{golosov2024lottery} at the upper end---(iii) complete USD-PPP-2016
+conversions and baseline columns, and (iv) verify that within-paper $\mpx$ across
+consumption, assets, and debt sums to $\approx 1$. The machine-readable extraction
+lives in \texttt{extraction.csv} (long format, one row per paper $\times$ asset
+line item).
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
